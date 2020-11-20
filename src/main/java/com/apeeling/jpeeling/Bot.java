@@ -1,7 +1,25 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The MIT License
+ *
+ * Copyright 2020 A-Peeling.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package com.apeeling.jpeeling;
 
@@ -21,10 +39,14 @@ import discord4j.core.object.entity.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.io.*;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Bot {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         GatewayDiscordClient client = DiscordClientBuilder.create("BOT_TOKEN").build().login().block();
 
         assert client != null;
@@ -73,6 +95,20 @@ public class Bot {
                                 })
                         )
                 )
+                .subscribe();
+        
+        // calendar command and this time im wide awake yee haw
+        client.getEventDispatcher().on(MessageCreateEvent.class)
+                .map(MessageCreateEvent::getMessage)
+                .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
+                .filter(message -> message.getContent().equalsIgnoreCase("%calendar"))
+                .flatMap(Message::getChannel)
+                .flatMap(channel -> channel.createMessage(messageSpec -> { try { 
+                    messageSpec.addFile("gamer.png", CalCommand.gamer());
+            } catch (IOException ex) {
+                Logger.getLogger(Bot.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                                                                           messageSpec.setContent("here is a bonafide gamer:"); }))
                 .subscribe();
 
         client.onDisconnect().block();
