@@ -49,6 +49,11 @@ public class Bot {
 
     public static void main(String[] args) throws IOException {
         Properties prop = PropertiesInterface.readPropertiesFile("./res/config.properties");
+        if (prop.getProperty("token").equals("INSERT_TOKEN"))
+        {
+            System.out.print("You need to setup the bot in order to use it. /res/config.properties");
+            System.exit(0);
+        }
         GatewayDiscordClient client = DiscordClientBuilder.create(prop.getProperty("token")).build().login().block();
 
         assert client != null;
