@@ -63,10 +63,12 @@ public class Bot {
                     System.out.printf("Logged in as %s#%s%n", self.getUsername(), self.getDiscriminator());
                 });
 
+        String prefix = prop.getProperty("prefix");
+
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase("%ping"))
+                .filter(message -> message.getContent().equalsIgnoreCase(prefix+"ping"))
                 .flatMap(Message::getChannel)
                 .flatMap(channel -> channel.createMessage("Pong!"))
                 .subscribe();
@@ -78,7 +80,7 @@ public class Bot {
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase("%datetime"))
+                .filter(message -> message.getContent().equalsIgnoreCase(prefix+"datetime"))
                 .flatMap(Message::getChannel)
                 .flatMap(channel -> channel.createMessage(formatDateTime))
                 .subscribe();
@@ -92,7 +94,7 @@ public class Bot {
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase("%garfield"))
+                .filter(message -> message.getContent().equalsIgnoreCase(prefix+"garfield"))
                 .flatMap(Message::getChannel)
                 .flatMap(
                         channel -> channel.createMessage(
@@ -108,7 +110,7 @@ public class Bot {
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase("%calendar"))
+                .filter(message -> message.getContent().equalsIgnoreCase(prefix+"calendar"))
                 .flatMap(Message::getChannel)
                 .flatMap(channel -> channel.createMessage(messageSpec -> { try { 
                     messageSpec.addFile("gamer.png", CalCommand.gamer());
