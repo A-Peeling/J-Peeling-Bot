@@ -24,32 +24,28 @@
 package com.apeeling.jpeeling;
 
 import java.io.*;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.Random;
+import java.util.Properties;
 
 /**
  *
- * @author reitraced
+ * @author stophman1
  */
-public class CalCommand {
-   public static FileInputStream gamer() throws IOException {
-      FileInputStream is;            
-      is = new FileInputStream(imageFile());
-      return is;
-      // is.close();
-      }
-   
-    public static int dayNum(LocalDate date) {
-        DayOfWeek day = date.getDayOfWeek();
-        return day.getValue();
-    }
-    public static File imageFile() {
-        LocalDate today = LocalDate.now();
-        File dir = new File("./res/" + dayNum(today));
-        File[] files = dir.listFiles();
-        Random rand = new Random();
-        assert files != null;
-        return files[rand.nextInt(files.length)];
+
+
+public class PropertiesInterface {
+    public static Properties readPropertiesFile(String fileName) throws IOException {
+        FileInputStream epicgamers = null;
+        Properties prop = null;
+        try {
+            epicgamers = new FileInputStream(fileName);
+            prop = new Properties();
+            prop.load(epicgamers);
+        } catch(IOException pooploader) {
+            pooploader.printStackTrace();
+        } finally {
+            assert epicgamers != null;
+            epicgamers.close();
+        }
+        return prop;
     }
 }

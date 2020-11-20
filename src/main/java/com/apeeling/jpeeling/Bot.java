@@ -23,31 +23,33 @@
  */
 package com.apeeling.jpeeling;
 
-/**
- *
- * @author reitraced
- * @author stophman1
- */
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import discord4j.core.object.Embed;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.io.*;
-
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This is a pretty epic bot ngl
+ *
+ * @author reitraced
+ * @author stophman1
+ */
+
 public class Bot {
 
-    public static void main(String[] args) throws FileNotFoundException {
-        GatewayDiscordClient client = DiscordClientBuilder.create("BOT_TOKEN").build().login().block();
+    public static void main(String[] args) throws IOException {
+        Properties prop = PropertiesInterface.readPropertiesFile("./res/config.properties");
+        GatewayDiscordClient client = DiscordClientBuilder.create(prop.getProperty("token")).build().login().block();
 
         assert client != null;
         client.getEventDispatcher().on(ReadyEvent.class)
