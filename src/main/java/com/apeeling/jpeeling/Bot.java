@@ -48,6 +48,15 @@ import java.util.logging.Logger;
  */
 
 public class Bot {
+    
+    public static String garry() {
+        LocalDate rhrn = LocalDate.now();
+        int year = rhrn.getYear();
+        DateTimeFormatter yymmdd = DateTimeFormatter.ofPattern("yyMMdd");
+        String formatDate = rhrn.format(yymmdd);
+        String garreth = "http://www.professorgarfield.org/ipi1200/" + year + "/ga" + formatDate + ".gif";
+        return garreth;
+    }
 
     public static void main(String[] args) throws IOException {
         Properties prop = PropertiesInterface.readPropertiesFile("./res/config.properties");
@@ -74,7 +83,7 @@ public class Bot {
                 .flatMap(Message::getChannel)
                 .flatMap(channel -> channel.createMessage("Pong!"))
                 .subscribe();
-
+/*
         // date and time command
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -86,13 +95,9 @@ public class Bot {
                 .flatMap(Message::getChannel)
                 .flatMap(channel -> channel.createMessage(formatDateTime))
                 .subscribe();
+*/
 
         // garfield command fuck im tired
-        int year = now.getYear();
-        LocalDate rhrn = LocalDate.now();
-        DateTimeFormatter yymmdd = DateTimeFormatter.ofPattern("yyMMdd");
-        String formatDate = rhrn.format(yymmdd);
-        String formatDashes = now.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
@@ -101,8 +106,9 @@ public class Bot {
                 .flatMap(
                         channel -> channel.createMessage(
                                 messageSpec -> messageSpec.setEmbed(embedSpec -> {
-                                    embedSpec.setImage("http://www.professorgarfield.org/ipi1200/" + year + "/ga" + formatDate + ".gif");
-                                    embedSpec.setDescription("Today on Garfield ‣ " + formatDashes);
+                                    embedSpec.setImage(garry());
+                                    // embedSpec.setDescription("Today on Garfield ‣ " + formatDashes);
+                                    embedSpec.setDescription("Today on Garfield");
                                 })
                         )
                 )
