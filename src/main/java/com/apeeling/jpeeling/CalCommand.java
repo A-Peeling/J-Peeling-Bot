@@ -32,6 +32,7 @@ import java.util.Random;
  *
  * @author reitraced
  */
+//In remembrance of gamer the best class.
 public class CalCommand {
     public static int dayNum(LocalDate date) {
         DayOfWeek day = date.getDayOfWeek();
