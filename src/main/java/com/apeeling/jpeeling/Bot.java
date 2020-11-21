@@ -102,7 +102,7 @@ public class Bot {
                         channel -> channel.createMessage(
                                 messageSpec -> messageSpec.setEmbed(embedSpec -> {
                                     embedSpec.setImage("http://www.professorgarfield.org/ipi1200/" + year + "/ga" + formatDate + ".gif");
-                                    embedSpec.setDescription("Today on Garfield - " + formatDashes);
+                                    embedSpec.setDescription("Today on Garfield ‣ " + formatDashes);
                                 })
                         )
                 )
