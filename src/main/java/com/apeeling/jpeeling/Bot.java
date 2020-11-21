@@ -30,6 +30,8 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -110,14 +112,17 @@ public class Bot {
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase(prefix+"calendar"))
+                .filter(message -> message.getContent().equalsIgnoreCase(prefix + "calendar"))
                 .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage(messageSpec -> { try { 
-                    messageSpec.addFile("gamer.png", CalCommand.gamer());
-            } catch (IOException ex) {
-                Logger.getLogger(Bot.class.getName()).log(Level.SEVERE, null, ex);
-            }
-                                                                           messageSpec.setContent("here is a bonafide gamer:"); }))
+                .flatMap(channel -> channel.createMessage(messageSpec -> {
+                    try {
+                        File FilePath = CalCommand.imageFile();
+                        messageSpec.addFile(FilePath.toString().substring(8), new FileInputStream(FilePath));
+                    } catch (IOException ex) {
+                        Logger.getLogger(Bot.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    messageSpec.setContent("here is a bonafide gamer:");
+                }))
                 .subscribe();
 
         client.onDisconnect().block();

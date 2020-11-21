@@ -33,13 +33,6 @@ import java.util.Random;
  * @author reitraced
  */
 public class CalCommand {
-   public static FileInputStream gamer() throws IOException {
-      FileInputStream is;            
-      is = new FileInputStream(imageFile());
-      return is;
-      // is.close();
-      }
-   
     public static int dayNum(LocalDate date) {
         DayOfWeek day = date.getDayOfWeek();
         return day.getValue();
