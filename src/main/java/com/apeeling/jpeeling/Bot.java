@@ -49,11 +49,8 @@ import java.util.logging.Logger;
 public class Bot {
     
     public static String garry() {
-        int year = GetDateTime.timee().getYear();
         DateTimeFormatter yymmdd = DateTimeFormatter.ofPattern("yyMMdd");
-        String formatDate = GetDateTime.timee().format(yymmdd);
-        String garreth = "http://www.professorgarfield.org/ipi1200/" + year + "/ga" + formatDate + ".gif";
-        return garreth;
+        return "http://www.professorgarfield.org/ipi1200/" + LocalDateTime.now().getYear() + "/ga" + LocalDateTime.now().format(yymmdd) + ".gif";
     }
 
     public static void main(String[] args) throws IOException {
@@ -84,18 +81,16 @@ public class Bot {
         
         // date and time command
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String formatDateTime = GetDateTime.timee().format(format);
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase(prefix+"datetime"))
+                .filter(message -> message.getContent().equalsIgnoreCase(prefix + "datetime"))
                 .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage(formatDateTime))
+                .flatMap(channel -> channel.createMessage(LocalDateTime.now().format(format)))
                 .subscribe();
 
         // garfield command fuck im tired
         DateTimeFormatter formatDashes = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDashes = GetDateTime.timee().format(formatDashes);
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
@@ -105,7 +100,7 @@ public class Bot {
                         channel -> channel.createMessage(
                                 messageSpec -> messageSpec.setEmbed(embedSpec -> {
                                     embedSpec.setImage(garry());
-                                    embedSpec.setDescription("Today on Garfield ‣ " + formattedDashes);
+                                    embedSpec.setDescription("Today on Garfield ‣ " + LocalDateTime.now().format(formatDashes));
                                 })
                         )
                 )
