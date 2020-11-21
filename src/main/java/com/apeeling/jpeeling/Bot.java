@@ -33,7 +33,6 @@ import discord4j.core.object.entity.User;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
@@ -50,10 +49,9 @@ import java.util.logging.Logger;
 public class Bot {
     
     public static String garry() {
-        LocalDate rhrn = LocalDate.now();
-        int year = rhrn.getYear();
+        int year = GetDateTime.timee().getYear();
         DateTimeFormatter yymmdd = DateTimeFormatter.ofPattern("yyMMdd");
-        String formatDate = rhrn.format(yymmdd);
+        String formatDate = GetDateTime.timee().format(yymmdd);
         String garreth = "http://www.professorgarfield.org/ipi1200/" + year + "/ga" + formatDate + ".gif";
         return garreth;
     }
@@ -83,11 +81,10 @@ public class Bot {
                 .flatMap(Message::getChannel)
                 .flatMap(channel -> channel.createMessage("Pong!"))
                 .subscribe();
-/*
+        
         // date and time command
-        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String formatDateTime = now.format(format);
+        String formatDateTime = GetDateTime.timee().format(format);
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
@@ -95,9 +92,10 @@ public class Bot {
                 .flatMap(Message::getChannel)
                 .flatMap(channel -> channel.createMessage(formatDateTime))
                 .subscribe();
-*/
 
         // garfield command fuck im tired
+        DateTimeFormatter formatDashes = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDashes = GetDateTime.timee().format(formatDashes);
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
@@ -107,8 +105,7 @@ public class Bot {
                         channel -> channel.createMessage(
                                 messageSpec -> messageSpec.setEmbed(embedSpec -> {
                                     embedSpec.setImage(garry());
-                                    // embedSpec.setDescription("Today on Garfield ‣ " + formatDashes);
-                                    embedSpec.setDescription("Today on Garfield");
+                                    embedSpec.setDescription("Today on Garfield ‣ " + formattedDashes);
                                 })
                         )
                 )
