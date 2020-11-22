@@ -34,13 +34,8 @@ import java.util.Random;
  */
 //In remembrance of gamer the best class.
 public class CalCommand {
-    public static int dayNum(LocalDate date) {
-        DayOfWeek day = date.getDayOfWeek();
-        return day.getValue();
-    }
     public static File imageFile() {
-        LocalDate today = LocalDate.now();
-        File dir = new File("./res/" + dayNum(today));
+        File dir = new File("./res/" + LocalDate.now().getDayOfWeek().getValue());
         File[] files = dir.listFiles();
         Random rand = new Random();
         assert files != null;

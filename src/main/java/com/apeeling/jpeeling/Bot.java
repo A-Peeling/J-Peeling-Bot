@@ -30,6 +30,9 @@ import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
+/* import discord4j.core.object.presence.Activity;
+import discord4j.core.object.presence.Presence;
+import discord4j.core.object.presence.Status; */
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,6 +42,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+// import reactor.core.publisher.Mono;
 
 /**
  * This is a pretty epic bot ngl
@@ -63,7 +68,7 @@ public class Bot {
         }
         GatewayDiscordClient client = DiscordClientBuilder.create(prop.getProperty("token")).build().login().block();
 
-        assert client != null;
+        assert client != null; 
         client.getEventDispatcher().on(ReadyEvent.class)
                 .subscribe(event -> {
                     User self = event.getSelf();
