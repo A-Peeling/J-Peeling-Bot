@@ -25,7 +25,6 @@ package com.apeeling.jpeeling;
 
 import java.io.*;
 import java.util.Properties;
-import java.io.FileWriter;
 /**
  *
  * @author stophman1

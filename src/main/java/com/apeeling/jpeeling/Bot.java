@@ -23,7 +23,6 @@
  */
 package com.apeeling.jpeeling;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
