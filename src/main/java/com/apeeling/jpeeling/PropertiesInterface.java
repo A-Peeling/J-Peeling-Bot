@@ -25,7 +25,7 @@ package com.apeeling.jpeeling;
 
 import java.io.*;
 import java.util.Properties;
-
+import java.io.FileWriter;
 /**
  *
  * @author stophman1
@@ -40,12 +40,25 @@ public class PropertiesInterface {
             epicgamers = new FileInputStream(fileName);
             prop = new Properties();
             prop.load(epicgamers);
-        } catch(IOException pooploader) {
+        } catch (IOException pooploader) {
             pooploader.printStackTrace();
         } finally {
             assert epicgamers != null;
             epicgamers.close();
         }
         return prop;
+    }
+
+    public static void ChangePropertiesFile(String fileName, String setting, String value) throws IOException {
+        //read
+        FileInputStream read = new FileInputStream(fileName);
+        Properties property = new Properties();
+        property.load(read);
+        read.close();
+        //write
+        FileOutputStream exit = new FileOutputStream(fileName);
+        property.setProperty(setting, value);
+        property.store(exit, null);
+        exit.close();
     }
 }
