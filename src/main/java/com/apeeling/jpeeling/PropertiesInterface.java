@@ -25,7 +25,6 @@ package com.apeeling.jpeeling;
 
 import java.io.*;
 import java.util.Properties;
-import java.io.FileWriter;
 /**
  *
  * @author stophman1
@@ -50,11 +49,7 @@ public class PropertiesInterface {
     }
 
     public static void ChangePropertiesFile(String fileName, String setting, String value) throws IOException {
-        //read
-        FileInputStream read = new FileInputStream(fileName);
-        Properties property = new Properties();
-        property.load(read);
-        read.close();
+        Properties property = readPropertiesFile(fileName);
         //write
         FileOutputStream exit = new FileOutputStream(fileName);
         property.setProperty(setting, value);
