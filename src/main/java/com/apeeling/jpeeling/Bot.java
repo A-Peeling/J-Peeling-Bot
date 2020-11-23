@@ -97,11 +97,12 @@ public class Bot extends ListenerAdapter {
         if (msg.getContentRaw().equals(prefix + "calendar")) {
         	MessageChannel channel = event.getChannel();
         	EmbedBuilder embed = new EmbedBuilder();
-        	embed.setImage("attachment://" + CalCommand.imageFile().toString().substring(11))
-                    .setFooter("Cool footer!")
+        	File garry = CalCommand.imageFile();
+        	embed.setImage("attachment://" + garry.toString().substring(11))
+                 .setFooter("Cool footer!")
         	     .setDescription("here is a bonafide gamer");
         	try {
-				channel.sendFile(new FileInputStream(CalCommand.imageFile()), CalCommand.imageFile().toString().substring(11)).embed(embed.build()).queue();
+				channel.sendFile(new FileInputStream(garry), garry.toString().substring(11)).embed(embed.build()).queue();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
