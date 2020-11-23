@@ -114,11 +114,14 @@ public class Bot extends ListenerAdapter {
             MessageChannel channel = event.getChannel();
             EmbedBuilder embed = new EmbedBuilder();
             File garry = CalCommand.imageFile();
-            embed.setImage("attachment://" + garry.toString().substring(12))
+            String filename = garry.toString().substring(12);
+            filename = filename.replace('[', ']');
+            filename = filename.replace("]", "");
+            embed.setImage("attachment://" + filename)
                     .setFooter("Cool footer!")
                     .setDescription("here is a bonafide gamer");
             try {
-                channel.sendFile(new FileInputStream(garry), garry.toString().substring(12)).embed(embed.build()).queue();
+                channel.sendFile(new FileInputStream(garry), filename).embed(embed.build()).queue();
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
