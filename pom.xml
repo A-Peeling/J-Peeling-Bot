@@ -23,6 +23,11 @@
             <artifactId>JDA</artifactId>
             <version>4.2.0_221</version>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
     </dependencies>
     <name>J-Peeling</name>
     <description>A (hopefully) decent rewrite of the Python-based A-Peeling Bot (https://github.com/A-Peeling/A-Peeling-Bot) in Java
