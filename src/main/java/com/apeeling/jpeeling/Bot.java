@@ -24,12 +24,11 @@
 package com.apeeling.jpeeling;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -54,13 +53,27 @@ public class Bot extends ListenerAdapter {
             System.out.print("You need to setup the bot in order to use it. /res/config.properties");
             System.exit(0);
         }
-        // args[0] should be the token
-        // We only need 2 intents in this bot. We only respond to messages in guilds and private channels.
-        // All other events will be disabled.
-        JDABuilder.createLight(prop.getProperty("token"), GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
-                .addEventListeners(new Bot())
-                .setActivity(Activity.playing(prop.getProperty("doin")))
-                .build();
+        if (prop.getProperty("playingorstreaming").equals("streaming")) {
+            if (!Activity.isValidStreamingUrl(prop.getProperty("streamingurl"))) {
+                System.out.print("streamingurl is invalid!\n");
+                JDABuilder.createLight(prop.getProperty("token"), GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
+                        .addEventListeners(new Bot())
+                        .setActivity(Activity.playing(prop.getProperty("doin")))
+                        .build();
+                return;
+            }
+            JDABuilder.createLight(prop.getProperty("token"), GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
+                    .addEventListeners(new Bot())
+                    .setActivity(Activity.streaming(prop.getProperty("doin"), prop.getProperty("streamingurl")))
+                    .build();
+        } else if (prop.get("playingorstreaming").equals("playing")) {
+            JDABuilder.createLight(prop.getProperty("token"), GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
+                    .addEventListeners(new Bot())
+                    .setActivity(Activity.playing(prop.getProperty("doin")))
+                    .build();
+        } else {
+            System.out.print("ERROR IN THE CONFIG!!! >:( /res/config.properties \nThe field \"playingorstreaming\" must be either \"playing\" or \"streaming\"");
+        }
     }
     
     @Override
@@ -78,6 +91,7 @@ public class Bot extends ListenerAdapter {
         Message msg = event.getMessage();
         
         if (msg.getContentRaw().equals(prefix + "ping")) {
+            if (event.getAuthor().isBot()) return;
             MessageChannel channel = event.getChannel();
             long time = System.currentTimeMillis();
             channel.sendMessage("Pong!") /* => RestAction<Message> */
@@ -85,6 +99,7 @@ public class Bot extends ListenerAdapter {
         }
         
         if (msg.getContentRaw().equals(prefix + "garfield")) {
+            if (event.getAuthor().isBot()) return;
             MessageChannel channel = event.getChannel();
             DateTimeFormatter yymmdd = DateTimeFormatter.ofPattern("yyMMdd");
             DateTimeFormatter formatDashes = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -95,6 +110,7 @@ public class Bot extends ListenerAdapter {
         }
         
         if (msg.getContentRaw().equals(prefix + "calendar")) {
+            if (event.getAuthor().isBot()) return;
             MessageChannel channel = event.getChannel();
             EmbedBuilder embed = new EmbedBuilder();
             File garry = CalCommand.imageFile();
@@ -109,8 +125,48 @@ public class Bot extends ListenerAdapter {
             }
         }
         if (msg.getContentRaw().equals(prefix + "datetime")) {
+            if (event.getAuthor().isBot()) return;
             MessageChannel channel = event.getChannel();
             channel.sendMessage(LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss"))).queue();
+        }
+        /*
+        mi dracykeia
+        .i mi na se bangu le jbobau.
+        .i .e'o ko livycru mi bu'u le bavla'i ke nunde'a tcana
+        */
+        if (msg.getContentRaw().startsWith(prefix + "game")) {
+            MessageChannel channel = event.getChannel();
+            String messageContentStr = msg.getContentRaw().substring((prefix + "game").length());
+            if (messageContentStr.length() == 0 || messageContentStr.length() == 1) {
+                channel.sendMessage("You need to say a game for me to play. " + prefix + "game {game}").queue();
+                return;
+            }
+            if (messageContentStr.charAt(0) == ' ') messageContentStr = messageContentStr.replaceFirst("^ *", "");
+            if (event.getAuthor().isBot()) return;
+            if (!event.getAuthor().toString().substring((event.getAuthor().toString().length() - 19), event.getAuthor().toString().length() - 1).equals(prop.getProperty("userid"))) {
+                channel.sendMessage("Your user id is not in the config mister.").queue();
+                return;
+            }
+            try {
+                PropertiesController.ChangePropertiesFile("./res/config.properties", "doin", messageContentStr);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (prop.getProperty("playingorstreaming").equals("streaming")) {
+                if (!Activity.isValidStreamingUrl(prop.getProperty("streamingurl"))) {
+                    channel.sendMessage("ERROR!!! Your streamingurl is not valid!").queue();
+                    return;
+                }
+                event.getJDA().getPresence().setActivity(Activity.streaming(prop.getProperty("doin"), prop.getProperty("streamingurl")));
+                channel.sendMessage("Success! Now streaming " + messageContentStr).queue();
+                return;
+            } else if (prop.getProperty("playingorstreaming").equals("playing")) {
+                event.getJDA().getPresence().setActivity(Activity.playing(prop.getProperty("doin")));
+                channel.sendMessage("Success! Now playing " + messageContentStr).queue();
+                return;
+            }
+            channel.sendMessage("ERROR IN THE CONFIG!!! >:( The field \"playingorstreaming\" must be either \"playing\" or \"streaming\", silly goose!!!1!!!1!").queue();
+
         }
     }
 }
