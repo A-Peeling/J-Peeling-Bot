@@ -62,23 +62,21 @@ public class Bot extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         Properties prop = null;
-		try {
-			prop = PropertiesController.readPropertiesFile("./res/config.properties");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        String prefix = prop.getProperty("prefix");
-        
+        try {
+            prop = PropertiesController.readPropertiesFile("./res/config.properties");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         Message msg = event.getMessage();
-        
-        if (msg.getContentRaw().equals(prefix + "ping")) {
+        assert prop != null;
+        if (msg.getContentRaw().equals(prop.getProperty("prefix") + "ping")) {
             MessageChannel channel = event.getChannel();
             long time = System.currentTimeMillis();
             channel.sendMessage("Pong!") /* => RestAction<Message> */
                     .queue(response /* => Message */ -> response.editMessageFormat("Pong: %d ms", System.currentTimeMillis() - time).queue());
         }
-        
+
         // if (msg.getContentRaw().equals(prefix + "garfield"))
     }
 }
