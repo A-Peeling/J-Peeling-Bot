@@ -108,5 +108,9 @@ public class Bot extends ListenerAdapter {
                 e.printStackTrace();
             }
         }
+        if (msg.getContentRaw().equals(prefix + "datetime")) {
+            MessageChannel channel = event.getChannel();
+            channel.sendMessage(LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss"))).queue();
+        }
     }
 }
