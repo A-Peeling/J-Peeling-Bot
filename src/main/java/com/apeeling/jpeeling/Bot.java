@@ -72,6 +72,7 @@ public class Bot extends ListenerAdapter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        assert prop != null;
         String prefix = prop.getProperty("prefix");
         
         Message msg = event.getMessage();
@@ -85,12 +86,12 @@ public class Bot extends ListenerAdapter {
         
         if (msg.getContentRaw().equals(prefix + "garfield")) {
             MessageChannel channel = event.getChannel();
-        	DateTimeFormatter yymmdd = DateTimeFormatter.ofPattern("yyMMdd");
+            DateTimeFormatter yymmdd = DateTimeFormatter.ofPattern("yyMMdd");
             DateTimeFormatter formatDashes = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        	EmbedBuilder embed = new EmbedBuilder();
-        	embed.setImage("http://www.professorgarfield.org/ipi1200/" + LocalDateTime.now().getYear() + "/ga" + LocalDateTime.now().format(yymmdd) + ".gif")
-                 .setDescription("Today on Garfield ‣ " + LocalDateTime.now().format(formatDashes));
-        	channel.sendMessage(embed.build());
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.setImage("http://www.professorgarfield.org/ipi1200/" + LocalDateTime.now().getYear() + "/ga" + LocalDateTime.now().format(yymmdd) + ".gif")
+                    .setDescription("Today on Garfield ‣ " + LocalDateTime.now().format(formatDashes));
+            channel.sendMessage(embed.build()).queue();
         }
     }
 }
