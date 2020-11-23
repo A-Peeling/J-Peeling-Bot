@@ -23,26 +23,12 @@
  */
 package com.apeeling.jpeeling;
 
-import discord4j.core.DiscordClientBuilder;
-import discord4j.core.GatewayDiscordClient;
-import discord4j.core.event.domain.lifecycle.ReadyEvent;
-import discord4j.core.event.domain.message.MessageCreateEvent;
-import discord4j.core.object.entity.Message;
-import discord4j.core.object.entity.User;
-/* import discord4j.core.object.presence.Activity;
-import discord4j.core.object.presence.Presence;
-import discord4j.core.object.presence.Status; */
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-// import reactor.core.publisher.Mono;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /**
  * This is a pretty epic bot ngl
@@ -52,83 +38,26 @@ import java.util.logging.Logger;
  */
 
 public class Bot {
-    
-    public static String garry() {
-        DateTimeFormatter yymmdd = DateTimeFormatter.ofPattern("yyMMdd");
-        return "http://www.professorgarfield.org/ipi1200/" + LocalDateTime.now().getYear() + "/ga" + LocalDateTime.now().format(yymmdd) + ".gif";
+    private static final String BOT_TOKEN = ("./res/config.properties");
+
+    public static void main(String[] arguments) throws Exception {
+        JDA api = JDABuilder.createDefault(BOT_TOKEN).build();
     }
 
-    public static void main(String[] args) throws IOException {
-        Properties prop = PropertiesInterface.readPropertiesFile("./res/config.properties");
-        if (prop.getProperty("token").equals("INSERT_TOKEN"))
-        {
-            System.out.print("You need to setup the bot in order to use it. /res/config.properties");
-            System.exit(0);
+    public class MyListener extends ListenerAdapter {
+        @Override
+        public void onMessageReceived(MessageReceivedEvent event) {
+            if (event.getAuthor().isBot()) return;
+            // We don't want to respond to other bot accounts, including ourself
+            Message message = event.getMessage();
+            String content = message.getContentRaw();
+            // getContentRaw() is an atomic getter
+            // getContentDisplay() is a lazy getter which modifies the content for e.g. console view (strip discord formatting)
+            if (content.equals("!ping")) {
+                MessageChannel channel = event.getChannel();
+                channel.sendMessage("Pong!").queue(); // Important to call .queue() on the RestAction returned by sendMessage(...)
+            }
         }
-        GatewayDiscordClient client = DiscordClientBuilder.create(prop.getProperty("token")).build().login().block();
-
-        assert client != null; 
-        client.getEventDispatcher().on(ReadyEvent.class)
-                .subscribe(event -> {
-                    User self = event.getSelf();
-                    System.out.printf("Logged in as %s#%s%n", self.getUsername(), self.getDiscriminator());
-                });
-
-        String prefix = prop.getProperty("prefix");
-
-        client.getEventDispatcher().on(MessageCreateEvent.class)
-                .map(MessageCreateEvent::getMessage)
-                .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase(prefix+"ping"))
-                .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage("Pong!"))
-                .subscribe();
-        
-        // date and time command
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        client.getEventDispatcher().on(MessageCreateEvent.class)
-                .map(MessageCreateEvent::getMessage)
-                .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase(prefix + "datetime"))
-                .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage(LocalDateTime.now().format(format)))
-                .subscribe();
-
-        // garfield command fuck im tired
-        DateTimeFormatter formatDashes = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        client.getEventDispatcher().on(MessageCreateEvent.class)
-                .map(MessageCreateEvent::getMessage)
-                .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase(prefix+"garfield"))
-                .flatMap(Message::getChannel)
-                .flatMap(
-                        channel -> channel.createMessage(
-                                messageSpec -> messageSpec.setEmbed(embedSpec -> {
-                                    embedSpec.setImage(garry());
-                                    embedSpec.setDescription("Today on Garfield ‣ " + LocalDateTime.now().format(formatDashes));
-                                })
-                        )
-                )
-                .subscribe();
-        
-        // calendar command and this time im wide awake yee haw
-        client.getEventDispatcher().on(MessageCreateEvent.class)
-                .map(MessageCreateEvent::getMessage)
-                .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase(prefix + "calendar"))
-                .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage(messageSpec -> {
-                    try {
-                        File FilePath = CalCommand.imageFile();
-                        messageSpec.addFile(FilePath.toString().substring(8), new FileInputStream(FilePath));
-                    } catch (IOException ex) {
-                        Logger.getLogger(Bot.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    messageSpec.setContent("here is a bonafide gamer:");
-                }))
-                .subscribe();
-
-        client.onDisconnect().block();
     }
 
 }

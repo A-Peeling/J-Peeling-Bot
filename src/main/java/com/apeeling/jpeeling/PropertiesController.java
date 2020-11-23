@@ -25,13 +25,13 @@ package com.apeeling.jpeeling;
 
 import java.io.*;
 import java.util.Properties;
+
 /**
- *
  * @author stophman1
  */
 
 
-public class PropertiesInterface {
+public class PropertiesController {
     public static Properties readPropertiesFile(String fileName) throws IOException {
         FileInputStream epicgamers = null;
         Properties prop = null;
