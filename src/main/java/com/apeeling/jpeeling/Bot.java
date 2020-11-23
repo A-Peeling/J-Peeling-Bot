@@ -35,7 +35,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -92,6 +92,19 @@ public class Bot extends ListenerAdapter {
             embed.setImage("http://www.professorgarfield.org/ipi1200/" + LocalDateTime.now().getYear() + "/ga" + LocalDateTime.now().format(yymmdd) + ".gif")
                     .setDescription("Today on Garfield ‣ " + LocalDateTime.now().format(formatDashes));
             channel.sendMessage(embed.build()).queue();
+        }
+        
+        if (msg.getContentRaw().equals(prefix + "calendar")) {
+        	MessageChannel channel = event.getChannel();
+        	EmbedBuilder embed = new EmbedBuilder();
+        	embed.setImage("attachment://" + CalCommand.imageFile().toString().substring(11))
+        	     .setDescription("here is a bonafide gamer");
+        	try {
+				channel.sendFile(new FileInputStream(CalCommand.imageFile()), CalCommand.imageFile().toString().substring(11)).embed(embed.build()).queue();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
 }

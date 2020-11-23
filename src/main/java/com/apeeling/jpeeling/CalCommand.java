@@ -35,7 +35,7 @@ import java.util.Random;
 //In remembrance of gamer the best class.
 public class CalCommand {
     public static File imageFile() {
-        File dir = new File("./res/" + LocalDate.now().getDayOfWeek().getValue());
+        File dir = new File("./res/cal/" + LocalDate.now().getDayOfWeek().getValue());
         File[] files = dir.listFiles();
         Random rand = new Random();
         assert files != null;
