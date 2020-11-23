@@ -98,6 +98,7 @@ public class Bot extends ListenerAdapter {
         	MessageChannel channel = event.getChannel();
         	EmbedBuilder embed = new EmbedBuilder();
         	embed.setImage("attachment://" + CalCommand.imageFile().toString().substring(11))
+                    .setFooter("Cool footer!")
         	     .setDescription("here is a bonafide gamer");
         	try {
 				channel.sendFile(new FileInputStream(CalCommand.imageFile()), CalCommand.imageFile().toString().substring(11)).embed(embed.build()).queue();
