@@ -23,11 +23,13 @@
  */
 package com.apeeling.jpeeling;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -35,6 +37,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.util.Properties;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * This is a pretty epic bot ngl
@@ -79,6 +83,14 @@ public class Bot extends ListenerAdapter {
                     .queue(response /* => Message */ -> response.editMessageFormat("Pong: %d ms", System.currentTimeMillis() - time).queue());
         }
         
-        // if (msg.getContentRaw().equals(prefix + "garfield"))
+        if (msg.getContentRaw().equals(prefix + "garfield")) {
+            MessageChannel channel = event.getChannel();
+        	DateTimeFormatter yymmdd = DateTimeFormatter.ofPattern("yyMMdd");
+            DateTimeFormatter formatDashes = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        	EmbedBuilder embed = new EmbedBuilder();
+        	embed.setImage("http://www.professorgarfield.org/ipi1200/" + LocalDateTime.now().getYear() + "/ga" + LocalDateTime.now().format(yymmdd) + ".gif")
+                 .setDescription("Today on Garfield ‣ " + LocalDateTime.now().format(formatDashes));
+        	channel.sendMessage(embed.build());
+        }
     }
 }
