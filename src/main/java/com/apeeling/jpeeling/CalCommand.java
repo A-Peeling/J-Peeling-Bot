@@ -24,7 +24,6 @@
 package com.apeeling.jpeeling;
 
 import java.io.*;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Random;
 
