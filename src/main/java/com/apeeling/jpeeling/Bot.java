@@ -170,5 +170,9 @@ public class Bot extends ListenerAdapter {
             channel.sendMessage("ERROR IN THE CONFIG!!! >:( The field \"playingorstreaming\" must be either \"playing\" or \"streaming\", silly goose!!!1!!!1!").queue();
 
         }
+        if (msg.getContentRaw().equalsIgnoreCase("do bot")) {
+            MessageChannel channel = event.getChannel();
+            channel.sendMessage("yes you can do bot heres the github: https://github.com/A-Peeling/J-Peeling-Bot also use the branch jda-rewrite not main k thx").queue();
+        }
     }
 }
