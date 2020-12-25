@@ -4,5 +4,5 @@ A Discord bot for the server called A-Peeling, but in Java.\
 This bot is a test as of now.
 ## Requriments
 Computer\
-Java\
+Java 8 or above (if youre on an older java im hacking into your pc as we speak)\
 Maven
