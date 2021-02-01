@@ -103,7 +103,7 @@ public class Bot extends ListenerAdapter {
             DateTimeFormatter yymmdd = DateTimeFormatter.ofPattern("yyMMdd");
             DateTimeFormatter formatDashes = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             EmbedBuilder embed = new EmbedBuilder();
-            embed.setImage("http://www.professorgarfield.org/ipi1200/" + LocalDateTime.now().getYear() + "/ga" + LocalDateTime.now().format(yymmdd) + ".gif")
+            embed.setImage("http://images.ucomics.com/comics/ga/" + LocalDateTime.now().getYear() + "/ga" + LocalDateTime.now().format(yymmdd) + ".gif")
                     .setDescription("Today on Garfield ‣ " + LocalDateTime.now().format(formatDashes));
             channel.sendMessage(embed.build()).queue();
         }
