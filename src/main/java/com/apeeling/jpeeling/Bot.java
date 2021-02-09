@@ -99,6 +99,7 @@ public class Bot extends ListenerAdapter {
                     .queue(response /* => Message */ -> response.editMessageFormat("Pong: %d ms", System.currentTimeMillis() - time).queue());
         }
         
+        
         if (msg.getContentRaw().equals(prefix + "garfield")) {
             if (event.getAuthor().isBot()) return;
             MessageChannel channel = event.getChannel();
@@ -109,6 +110,7 @@ public class Bot extends ListenerAdapter {
                     .setDescription("Today on Garfield ‣ " + LocalDateTime.now().format(formatDashes));
             channel.sendMessage(embed.build()).queue();
         }
+        
         
         if (msg.getContentRaw().startsWith(prefix + "garfield")) {
         	MessageChannel channel = event.getChannel();
@@ -130,6 +132,7 @@ public class Bot extends ListenerAdapter {
         	}
         }
         
+        
         if (msg.getContentRaw().equals(prefix + "calendar")) {
             if (event.getAuthor().isBot()) return;
             MessageChannel channel = event.getChannel();
@@ -148,11 +151,15 @@ public class Bot extends ListenerAdapter {
                 e.printStackTrace();
             }
         }
+        
+        
         if (msg.getContentRaw().equals(prefix + "datetime")) {
             if (event.getAuthor().isBot()) return;
             MessageChannel channel = event.getChannel();
             channel.sendMessage(LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss"))).queue();
         }
+        
+        
         /*
         mi dracykeia
         .i mi na se bangu le jbobau.
@@ -192,10 +199,14 @@ public class Bot extends ListenerAdapter {
             channel.sendMessage("ERROR IN THE CONFIG!!! >:( The field \"playingorstreaming\" must be either \"playing\" or \"streaming\", silly goose!!!1!!!1!").queue();
 
         }
+        
+        
         if (msg.getContentRaw().equalsIgnoreCase("do bot")) {
             MessageChannel channel = event.getChannel();
-            channel.sendMessage("yes you can do bot heres the github: https://github.com/A-Peeling/J-Peeling-Bot also use the branch jda-rewrite not main k thx").queue();
+            channel.sendMessage(":flushed:").queue();
         }
+        
+        
         if (msg.getContentRaw().startsWith(prefix + "penis")) {
         	MessageChannel channel = event.getChannel();
         	try {
@@ -208,8 +219,17 @@ public class Bot extends ListenerAdapter {
         		channel.sendMessage(penout).queue();;
         	}
         	catch (NumberFormatException | StringIndexOutOfBoundsException e){
-        		channel.sendMessage("bruh wheres my integer :rage::rage::rage:").queue();
+        		channel.sendMessage("bruh wheres my integer :rage::rage::rage: that isnt an integer GIVE INTEGAER :rage:").queue();
         	}
+        	catch (IllegalArgumentException e) {
+        		channel.sendMessage("discords character limit is very... limiting. try a smaller number.").queue();
+        	}
+        }
+        
+        
+        if (msg.getContentRaw().equals(prefix + "work")) {
+        	MessageChannel channel = event.getChannel();
+        	channel.sendMessage("yes you can work on the bot: https://github.com/A-Peeling/J-Peeling-Bot").queue();
         }
     }
 }
