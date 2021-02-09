@@ -174,5 +174,20 @@ public class Bot extends ListenerAdapter {
             MessageChannel channel = event.getChannel();
             channel.sendMessage("yes you can do bot heres the github: https://github.com/A-Peeling/J-Peeling-Bot also use the branch jda-rewrite not main k thx").queue();
         }
+        if (msg.getContentRaw().startsWith(prefix + "penis")) {
+        	MessageChannel channel = event.getChannel();
+        	try {
+        		int painis = Integer.parseInt(msg.getContentRaw().substring(7));
+        		String penout = "3";
+        		for (int i = 0; i < painis; i++) {
+        			penout = penout + "=";
+        		}
+        		penout = penout + "D";
+        		channel.sendMessage(penout);
+        	}
+        	catch (NumberFormatException e){
+        		channel.sendMessage("bruh wheres my integer :rage::rage::rage:");
+        	}
+        }
     }
 }
