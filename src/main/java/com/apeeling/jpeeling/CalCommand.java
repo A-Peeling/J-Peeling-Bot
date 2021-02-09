@@ -30,6 +30,7 @@ import java.util.Random;
 /**
  *
  * @author reitraced
+ * @author stophman1
  */
 //In remembrance of gamer the best class.
 public class CalCommand {
