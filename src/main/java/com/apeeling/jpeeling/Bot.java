@@ -35,8 +35,10 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import javax.security.auth.login.LoginException;
 import java.io.*;
 import java.util.Properties;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * This is a pretty epic bot ngl
@@ -106,6 +108,26 @@ public class Bot extends ListenerAdapter {
             embed.setImage("http://images.ucomics.com/comics/ga/" + LocalDateTime.now().getYear() + "/ga" + LocalDateTime.now().format(yymmdd) + ".gif")
                     .setDescription("Today on Garfield ‣ " + LocalDateTime.now().format(formatDashes));
             channel.sendMessage(embed.build()).queue();
+        }
+        
+        if (msg.getContentRaw().startsWith(prefix + "garfield")) {
+        	MessageChannel channel = event.getChannel();
+        	DateTimeFormatter yymmdd = DateTimeFormatter.ofPattern("yyMMdd");
+        	
+        	try {
+                DateTimeFormatter formatDashes = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        		LocalDate garfie = LocalDate.parse(msg.getContentRaw().substring(10));
+        		EmbedBuilder embed = new EmbedBuilder();
+        		embed.setImage("http://images.ucomics.com/comics/ga/" + garfie.getYear() + "/ga" + garfie.format(yymmdd) + ".gif")
+        		.setDescription("Garfield comic for " + garfie.format(formatDashes));
+        		channel.sendMessage(embed.build()).queue();
+        	}
+        	catch (StringIndexOutOfBoundsException e) {
+        		return;
+        	}
+        	catch (DateTimeParseException e) {
+        		channel.sendMessage("ayo what the fuck kinda shit date format is this i only do YYYY-MM-DD capice?").queue();
+        	}
         }
         
         if (msg.getContentRaw().equals(prefix + "calendar")) {
