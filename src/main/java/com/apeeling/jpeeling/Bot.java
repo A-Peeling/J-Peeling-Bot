@@ -183,10 +183,10 @@ public class Bot extends ListenerAdapter {
         			penout = penout + "=";
         		}
         		penout = penout + "D";
-        		channel.sendMessage(penout);
+        		channel.sendMessage(penout).queue();;
         	}
-        	catch (NumberFormatException e){
-        		channel.sendMessage("bruh wheres my integer :rage::rage::rage:");
+        	catch (NumberFormatException | StringIndexOutOfBoundsException e){
+        		channel.sendMessage("bruh wheres my integer :rage::rage::rage:").queue();
         	}
         }
     }
