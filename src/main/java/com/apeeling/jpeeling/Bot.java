@@ -35,6 +35,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import javax.security.auth.login.LoginException;
 import java.io.*;
 import java.util.Properties;
+import java.util.Random;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -139,7 +140,7 @@ public class Bot extends ListenerAdapter {
             EmbedBuilder embed = new EmbedBuilder();
             File garry = CalCommand.imageFile();
             String filename = garry.toString().substring(12);
-            filename = filename.replace('[', ']');
+            filename = filename.replace("[", "]");
             filename = filename.replace("]", "");
             embed.setImage("attachment://" + filename)
                     .setFooter("Cool footer!")
@@ -163,7 +164,7 @@ public class Bot extends ListenerAdapter {
         /*
         mi dracykeia
         .i mi na se bangu le jbobau.
-        .i .e'o ko livycru mi bu'u le bavla'i ke nunde'a tcana
+        .i .e"o ko livycru mi bu"u le bavla"i ke nunde"a tcana
         */
         if (msg.getContentRaw().startsWith(prefix + "game")) {
             MessageChannel channel = event.getChannel();
@@ -230,6 +231,26 @@ public class Bot extends ListenerAdapter {
         if (msg.getContentRaw().equals(prefix + "work")) {
         	MessageChannel channel = event.getChannel();
         	channel.sendMessage("yes you can work on the bot: https://github.com/A-Peeling/J-Peeling-Bot").queue();
+        }
+        
+        
+        if (msg.getContentRaw().startsWith(prefix + "8ball")) {
+        	MessageChannel channel = event.getChannel();
+        	Random ball = new Random();
+        	String[] response = { "It is certain",
+        			"As i see it, yes", 
+        			"Dont count on it", 
+        			"Without a doubt", 
+        			"Definitely", 
+        			"Very doubtful", 
+        			"Outlook not so good", 
+        			"My sources say no", 
+        			"My reply is no", 
+        			"Most likely", 
+        			"You may rely on it", 
+        			"Ask again later" };
+        	int index = ball.nextInt(response.length);
+        	channel.sendMessage(response[index]).queue();
         }
     }
 }
