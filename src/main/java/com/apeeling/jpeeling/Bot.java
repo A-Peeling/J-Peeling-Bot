@@ -119,21 +119,41 @@ public class Bot extends ListenerAdapter {
         	
         	try {
                 DateTimeFormatter formatDashes = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        		LocalDate garfie = LocalDate.parse(msg.getContentRaw().substring(10));
-        		EmbedBuilder embed = new EmbedBuilder();
-        		embed.setImage("http://images.ucomics.com/comics/ga/" + garfie.getYear() + "/ga" + garfie.format(yymmdd) + ".gif")
-        		.setDescription("Garfield comic for " + garfie.format(formatDashes));
-        		channel.sendMessage(embed.build()).queue();
-        	}
-        	catch (StringIndexOutOfBoundsException e) {
-        		return;
-        	}
-        	catch (DateTimeParseException e) {
-        		channel.sendMessage("ayo what the fuck kinda shit date format is this i only do YYYY-MM-DD capice?").queue();
-        	}
+                LocalDate garfie = LocalDate.parse(msg.getContentRaw().substring(10));
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setImage("http://images.ucomics.com/comics/ga/" + garfie.getYear() + "/ga" + garfie.format(yymmdd) + ".gif")
+                        .setDescription("Garfield comic for " + garfie.format(formatDashes));
+                channel.sendMessage(embed.build()).queue();
+            } catch (StringIndexOutOfBoundsException e) {
+                return;
+            } catch (DateTimeParseException e) {
+                channel.sendMessage("ayo what the fuck kinda shit date format is this i only do YYYY-MM-DD capice?").queue();
+            }
         }
-        
-        
+
+        if (msg.getContentRaw().startsWith(prefix + "heathcliff")) {
+            MessageChannel channel = event.getChannel();
+            String date = null;
+            try {
+                date = msg.getContentRaw().substring(12);
+            } catch (StringIndexOutOfBoundsException ignored) {
+            }
+            if (msg.getContentRaw().equals(prefix + "heathcliff")) {
+                DateTimeFormatter formatDashes = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                date = LocalDateTime.now().format(formatDashes);
+            }
+            try {
+                EmbedBuilder embed = new EmbedBuilder();
+                assert date != null;
+                embed.setImage(HeathcliffScraper.GetImage(LocalDate.parse(date)))
+                        .setDescription("Heathcliff comic for " + date);
+                channel.sendMessage(embed.build()).queue();
+            } catch (DateTimeParseException | IOException e) {
+                channel.sendMessage("We Heathcliff enjoyers use YYYY-MM-DD like civilized people.").queue();
+            }
+        }
+
+
         if (msg.getContentRaw().equals(prefix + "calendar")) {
             if (event.getAuthor().isBot()) return;
             MessageChannel channel = event.getChannel();
@@ -211,14 +231,14 @@ public class Bot extends ListenerAdapter {
         if (msg.getContentRaw().startsWith(prefix + "penis")) {
         	MessageChannel channel = event.getChannel();
         	try {
-        		int painis = Integer.parseInt(msg.getContentRaw().substring(7));
-        		String penout = "3";
-        		for (int i = 0; i < painis; i++) {
-        			penout = penout + "=";
-        		}
-        		penout = penout + "D";
-        		channel.sendMessage(penout).queue();;
-        	}
+                int painis = Integer.parseInt(msg.getContentRaw().substring(7));
+                String penout = "3";
+                for (int i = 0; i < painis; i++) {
+                    penout = penout + "=";
+                }
+                penout = penout + "D";
+                channel.sendMessage(penout).queue();
+            }
         	catch (NumberFormatException | StringIndexOutOfBoundsException e){
         		channel.sendMessage("bruh wheres my integer :rage::rage::rage: that isnt an integer GIVE INTEGAER :rage:").queue();
         	}
